@@ -1,0 +1,329 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.extension.css" />
+    <script src="/extension/toggle.js" async defer type="module"></script>
+    <style>
+      .feature-card {
+        background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 16px;
+      }
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        margin-bottom: 16px;
+      }
+      .badge-demo {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        color: white;
+        margin: 2px;
+      }
+      .premier-badge {
+        background: linear-gradient(135deg, #8847ff 0%, #a855f7 50%, #8847ff 100%);
+        box-shadow: 0 0 8px #8847ff60;
+      }
+      .rating-positive { background: #22c55e; }
+      .rating-neutral { background: #eab308; }
+      .rating-negative { background: #ef4444; }
+      .upload-btn-demo {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 13px;
+        display: inline-block;
+        margin-top: 8px;
+      }
+      .stat-preview {
+        background: #141414;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 12px;
+        border: 1px solid #333;
+      }
+      .stat-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px solid #222;
+        font-size: 13px;
+      }
+      .stat-row:last-child { border-bottom: none; }
+      .stat-label { color: #888; }
+      .stat-value { color: #fff; font-weight: 600; }
+      .version-tag {
+        background: #667eea;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .prediction-demo {
+        background: #141414;
+        border-radius: 8px;
+        padding: 16px;
+        margin-top: 12px;
+        border: 1px solid #333;
+      }
+      .team-bar {
+        display: flex;
+        height: 24px;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 12px 0;
+      }
+      .team-bar-left {
+        background: #22c55e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 12px;
+      }
+      .team-bar-right {
+        background: #ef4444;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 12px;
+      }
+      .map-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        border-bottom: 1px solid #222;
+        font-size: 12px;
+      }
+      .map-row:last-child { border-bottom: none; }
+      .map-name { color: #d4d4d4; text-transform: capitalize; }
+      .map-stats { color: #737373; font-size: 10px; }
+      .map-winrate { color: #22c55e; font-weight: 600; }
+    </style>
+  </head>
+
+  <body class="ll:bg-[#171717] ll:text-[14px] ll:text-white">
+    <div class="ll:mx-auto ll:max-w-[900px] ll:p-5">
+      <div class="ll:flex ll:items-center ll:justify-center ll:mt-8 ll:mb-4">
+        <img src="/icon.128.png" class="ll:w-24 ll:h-24" />
+      </div>
+
+      <h1 class="ll:mb-2 ll:text-center ll:text-3xl ll:font-bold">
+        LeetLens
+      </h1>
+      
+      <p class="ll:text-center ll:mb-2 ll:text-neutral-400">
+        Your all-in-one FACEIT enhancement extension
+      </p>
+      
+      <div class="ll:flex ll:justify-center ll:mb-8">
+        <span class="version-tag">v1.0.0 - January 2026</span>
+      </div>
+
+      <p class="ll:mb-8 ll:text-neutral-300 ll:text-center ll:max-w-[600px] ll:mx-auto">
+        Thank you for installing LeetLens! This extension enhances your FACEIT experience 
+        by uploading demos to Leetify, displaying player statistics, and predicting match outcomes.
+      </p>
+
+      <h2 class="ll:mb-6 ll:text-xl ll:font-semibold ll:text-center">Features</h2>
+      
+      <div class="ll:grid ll:grid-cols-1 md:ll:grid-cols-2 ll:gap-4 ll:mb-8">
+        <div class="feature-card">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+            <span>&#x2191;</span>
+          </div>
+          <h3 class="ll:font-semibold ll:text-lg ll:mb-2">One-Click Demo Upload</h3>
+          <p class="ll:text-neutral-400 ll:text-sm ll:mb-3">
+            Upload your FACEIT match demos to Leetify with a single click. 
+            No need to download files manually - just click and analyze.
+          </p>
+          <div class="upload-btn-demo">UPLOAD TO LEETIFY</div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <span>&#128302;</span>
+          </div>
+          <h3 class="ll:font-semibold ll:text-lg ll:mb-2">Match Win Prediction</h3>
+          <p class="ll:text-neutral-400 ll:text-sm ll:mb-3">
+            Match predictions based on Leetify ratings, Premier ranks, FACEIT ELO, 
+            aim stats, and map-specific win rates.
+          </p>
+          <div class="prediction-demo">
+            <div style="display: flex; justify-content: space-between; font-size: 11px; color: #a3a3a3;">
+              <span>Team Alpha</span>
+              <span>Team Beta</span>
+            </div>
+            <div class="team-bar">
+              <div class="team-bar-left" style="width: 62%;">62%</div>
+              <div class="team-bar-right" style="width: 38%;">38%</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
+            <span>&#9733;</span>
+          </div>
+          <h3 class="ll:font-semibold ll:text-lg ll:mb-2">Leetify Rating Badges</h3>
+          <p class="ll:text-neutral-400 ll:text-sm ll:mb-3">
+            See Leetify ratings for all players directly on the FACEIT match page. 
+            Color-coded badges show skill levels at a glance.
+          </p>
+          <div>
+            <span class="badge-demo rating-positive">+5.2</span>
+            <span class="badge-demo rating-neutral">+1.3</span>
+            <span class="badge-demo rating-negative">-2.8</span>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #8847ff, #a855f7);">
+            <span>&#9733;</span>
+          </div>
+          <h3 class="ll:font-semibold ll:text-lg ll:mb-2">CS2 Premier & FACEIT ELO</h3>
+          <p class="ll:text-neutral-400 ll:text-sm ll:mb-3">
+            Premier ranks and FACEIT ELO displayed prominently. 
+            Styled with official Valve colors based on rating tier.
+          </p>
+          <div>
+            <span class="badge-demo premier-badge">&#9733; 18,542</span>
+            <span class="badge-demo" style="background: #ff5500;">ELO 2847</span>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+            <span>&#128200;</span>
+          </div>
+          <h3 class="ll:font-semibold ll:text-lg ll:mb-2">Comprehensive Stats Popup</h3>
+          <p class="ll:text-neutral-400 ll:text-sm ll:mb-3">
+            Click any badge to view detailed stats: Aim, Positioning, Utility, Clutch %, 
+            Opening Duels, Headshot %, Reaction Time, CT/T side performance.
+          </p>
+          <div class="stat-preview">
+            <div class="stat-row">
+              <span class="stat-label">&#127919; Aim</span>
+              <span class="stat-value">62</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">&#128128; Clutch %</span>
+              <span class="stat-value">18.4%</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">&#9889; Reaction</span>
+              <span class="stat-value">385ms</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+            <span>&#127758;</span>
+          </div>
+          <h3 class="ll:font-semibold ll:text-lg ll:mb-2">Top Maps & Win Rates</h3>
+          <p class="ll:text-neutral-400 ll:text-sm ll:mb-3">
+            See each player's top 5 most played maps with their individual 
+            win rates calculated from recent match history.
+          </p>
+          <div class="stat-preview">
+            <div class="map-row">
+              <span class="map-name">Mirage</span>
+              <span><span class="map-stats">42W 28L</span> <span class="map-winrate">60%</span></span>
+            </div>
+            <div class="map-row">
+              <span class="map-name">Inferno</span>
+              <span><span class="map-stats">38W 31L</span> <span class="map-winrate">55%</span></span>
+            </div>
+            <div class="map-row">
+              <span class="map-name">Ancient</span>
+              <span><span class="map-stats">25W 22L</span> <span class="map-winrate">53%</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="ll:mb-4 ll:text-xl ll:font-semibold">How to Use</h2>
+      
+      <div class="ll:mb-8 ll:text-neutral-300">
+        <ol class="ll:list-decimal ll:list-inside ll:space-y-3">
+          <li>
+            Navigate to any <a href="https://www.faceit.com" target="_blank" class="ll:text-blue-400 ll:hover:underline">FACEIT</a> match room page
+          </li>
+          <li>
+            <strong>Match Prediction:</strong> See the win probability panel at the top of the page
+          </li>
+          <li>
+            <strong>Upload Demos:</strong> Click the gradient <span style="color: #667eea; font-weight: 600;">Upload to Leetify</span> button
+          </li>
+          <li>
+            <strong>View Ratings:</strong> Leetify ratings, Premier ranks, and FACEIT ELO appear next to player names
+          </li>
+          <li>
+            <strong>See Details:</strong> Click any badge to open detailed stats with Overview and Top Maps tabs
+          </li>
+        </ol>
+      </div>
+
+      <h2 class="ll:mb-4 ll:text-xl ll:font-semibold">Settings</h2>
+      
+      <label class="ll:mb-8 ll:inline-flex ll:w-full ll:cursor-pointer ll:items-center ll:rounded-lg ll:border ll:border-neutral-700 ll:px-5 ll:py-5 ll:bg-[#1a1a1a]">
+        <input type="checkbox" class="ll:peer ll:sr-only" id="auto-upload" />
+        <div class="ll:peer ll:relative ll:h-6 ll:w-11 ll:rounded-full ll:bg-neutral-700 ll:peer-checked:bg-[#667eea] ll:peer-focus:outline-hidden ll:after:absolute ll:after:start-[2px] ll:after:top-[2px] ll:after:h-5 ll:after:w-5 ll:after:rounded-full ll:after:border ll:after:bg-white ll:after:transition-all ll:after:content-[''] ll:peer-checked:after:translate-x-full ll:peer-checked:after:border-white ll:rtl:peer-checked:after:-translate-x-full"></div>
+        <div class="ll:ms-4">
+          <span class="ll:text-sm ll:font-medium ll:select-none">Auto upload when demo ready</span>
+          <span class="ll:block ll:text-xs ll:text-neutral-500">(Alpha) - Automatically upload demos as soon as they become available</span>
+        </div>
+      </label>
+
+      <h2 class="ll:mb-4 ll:text-xl ll:font-semibold">Changelog</h2>
+      
+      <div class="ll:mb-8 ll:text-neutral-300 ll:text-sm">
+        <div class="ll:mb-4 ll:p-4 ll:bg-[#1a1a1a] ll:rounded-lg ll:border ll:border-neutral-700">
+          <div class="ll:flex ll:items-center ll:gap-2 ll:mb-2">
+            <span class="version-tag">v1.0.0</span>
+            <span class="ll:text-neutral-500 ll:text-xs">January 2026</span>
+          </div>
+          <ul class="ll:list-disc ll:list-inside ll:space-y-1 ll:text-neutral-400">
+            <li>Initial release of LeetLens</li>
+            <li>One-click demo upload to Leetify</li>
+            <li>Leetify rating badges on player names</li>
+            <li>Premier rank display with Valve-style colors</li>
+            <li>FACEIT ELO display</li>
+            <li>Match win prediction panel</li>
+            <li>Map-specific win rates in predictions</li>
+            <li>Detailed stats popup with Overview and Top Maps tabs</li>
+            <li>Compare with Pro feature (vs donk)</li>
+            <li>6-second rate limit protection between API calls</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ll:border-t ll:border-neutral-700 ll:pt-6 ll:mt-8 ll:text-center ll:text-neutral-500 ll:text-sm">
+        <p class="ll:mb-2">LeetLens v1.0.0</p>
+        <p class="ll:mb-4">Data provided by <a href="https://leetify.com" target="_blank" class="ll:text-blue-400 ll:hover:underline">Leetify</a></p>
+        <p class="ll:text-xs ll:text-neutral-600">
+          LeetLens is not affiliated with, endorsed by, or sponsored by FACEIT or Leetify.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

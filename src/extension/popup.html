@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.extension.css" />
+    <script src="/extension/toggle.js" async defer type="module"></script>
+  </head>
+
+  <body
+    class="ll:min-w-[380px] ll:bg-[#171717] ll:p-6 ll:text-[14px] ll:text-white"
+  >
+    <div class="ll:flex ll:items-center ll:justify-center ll:mb-4">
+      <img
+        src="/icon.128.png"
+        class="ll:w-12 ll:h-12"
+      />
+    </div>
+
+    <h1 class="ll:mb-5 ll:text-center ll:text-2xl ll:font-bold">
+      LeetLens
+    </h1>
+    <p class="ll:mb-4">
+      Automatically upload your FACEIT demos to Leetify for analysis.
+    </p>
+
+    <p class="ll:mb-6">
+      To get started, navigate to a
+      <a
+        href="https://www.faceit.com"
+        target="_blank"
+        class="ll:text-blue-500 ll:hover:underline"
+        >FACEIT</a
+      >
+      or
+      <a
+        href="https://leetify.com/app"
+        target="_blank"
+        class="ll:text-blue-500 ll:hover:underline"
+        >Leetify</a
+      >
+      match page and click the <span class="ll:text-leetify">pink</span>
+      button to upload a match from FACEIT to Leetify.
+    </p>
+
+    <label
+      class="ll:mb-7 ll:inline-flex ll:w-full ll:cursor-pointer ll:items-center ll:rounded-lg ll:border ll:border-neutral-700 ll:p-4"
+    >
+      <input type="checkbox" class="ll:peer ll:sr-only" id="auto-upload" />
+      <div
+        class="ll:peer ll:relative ll:h-5 ll:w-9 ll:rounded-full ll:bg-neutral-700 ll:peer-checked:bg-[#667eea] ll:peer-focus:outline-hidden ll:after:absolute ll:after:start-[2px] ll:after:top-[2px] ll:after:h-4 ll:after:w-4 ll:after:rounded-full ll:after:border ll:after:bg-white ll:after:transition-all ll:after:content-[''] ll:peer-checked:after:translate-x-full ll:peer-checked:after:border-white ll:rtl:peer-checked:after:-translate-x-full"
+      ></div>
+      <span class="ll:ms-3 ll:text-sm ll:font-medium ll:select-none"
+        >Auto upload when demo ready (Alpha)</span
+      >
+    </label>
+
+    <p class="ll:text-center ll:text-neutral-500 ll:text-xs">
+      LeetLens v1.0.0
+    </p>
+  </body>
+</html>

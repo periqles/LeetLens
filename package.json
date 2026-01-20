@@ -1,0 +1,40 @@
+{
+  "name": "leetlens",
+  "version": "1.0.0",
+  "description": "FACEIT enhancement: upload demos to Leetify, view player stats, match predictions.",
+  "private": true,
+  "license": "GPLV3",
+  "type": "module",
+  "scripts": {
+    "build": "node build.js",
+    "bundle": "(cd dist/chrome && zip -r ../chrome.zip .) && (cd dist/firefox && zip -r ../firefox.zip .)",
+    "dev": "nodemon",
+    "format": "prettier -w ."
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.14",
+    "@types/chrome": "^0.0.309",
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@types/webextension-polyfill": "^0.12.3",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.6",
+    "esbuild": "^0.25.1",
+    "nodemon": "^3.1.9",
+    "postcss": "^8.5.3",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4.0.14",
+    "typescript": "^5.8.2"
+  },
+  "volta": {
+    "node": "22.14.0",
+    "pnpm": "10.6.2"
+  }
+}
