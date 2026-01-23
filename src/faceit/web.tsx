@@ -2,9 +2,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import FaceitToLeetifyButton from "./FaceitToLeetifyButton";
 import { FaceitToLeetifyLoadEventPayload, global } from "./global";
-import { injectLeetifyBadges, resetPlayerCache } from "./LeetifyBadgeInjector";
+import { injectPlayerBadges, resetPlayerCache } from "./PlayerBadgeInjector";
 
-console.log("Loaded Wig's Demo Uploader extension for FACEIT");
+console.log("Loaded LeetLens extension for FACEIT");
 
 if (new URLSearchParams(location.search).get("faceit-to-leetify") === "auto") {
   global.automatic = true;
@@ -59,7 +59,7 @@ function onDomChange() {
   if (!isProcessing) {
     debounceTimer = window.setTimeout(() => {
       isProcessing = true;
-      injectLeetifyBadges().finally(() => {
+      injectPlayerBadges().finally(() => {
         isProcessing = false;
       });
     }, 500);
@@ -70,8 +70,8 @@ onDomChange();
 
 const observer = new MutationObserver((mutations) => {
   const dominated = mutations.some(m => 
-    (m.target as Element).closest?.(".__leetify-badge") ||
-    (m.target as Element).classList?.contains("__leetify-badge")
+    (m.target as Element).closest?.(".__leetlens-badge") ||
+    (m.target as Element).classList?.contains("__leetlens-badge")
   );
   if (!dominated) {
     onDomChange();

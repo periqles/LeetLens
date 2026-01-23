@@ -1,6 +1,6 @@
 export default (browser) => ({
   manifest_version: 3,
-  version: "1.1.3",
+  version: "2.0.0",
   name: "LeetLens",
   description:
     "FACEIT enhancement: upload demos to Leetify, view player stats, match predictions.",
