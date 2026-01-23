@@ -40,7 +40,8 @@ export interface LeetifyProfile {
 const cache = new Map<string, { data: LeetifyProfile | null; timestamp: number }>();
 const pendingRequests = new Map<string, Promise<LeetifyProfile | null>>();
 const CACHE_TTL = 30 * 60 * 1000;
-const REQUEST_DELAY = 500;
+const BATCH_SIZE = 10;
+const BATCH_DELAY = 1000;
 
 let requestQueue: Array<{ steam64Id: string; resolve: (data: LeetifyProfile | null) => void }> = [];
 let isProcessingQueue = false;
@@ -50,27 +51,28 @@ async function processQueue() {
   isProcessingQueue = true;
   
   while (requestQueue.length > 0) {
-    const item = requestQueue.shift();
-    if (!item) continue;
+    const batch = requestQueue.splice(0, BATCH_SIZE);
     
-    const { steam64Id, resolve } = item;
+    const batchPromises = batch.map(async ({ steam64Id, resolve }) => {
+      const cached = cache.get(steam64Id);
+      if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        resolve(cached.data);
+        return;
+      }
+      
+      try {
+        const data = await doFetchProfile(steam64Id);
+        resolve(data);
+      } catch (e) {
+        console.error("[LeetLens] Batch fetch error:", e);
+        resolve(null);
+      }
+    });
     
-    const cached = cache.get(steam64Id);
-    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
-      resolve(cached.data);
-      continue;
-    }
-    
-    try {
-      const data = await doFetchProfile(steam64Id);
-      resolve(data);
-    } catch (e) {
-      console.error("[LeetLens] Queue fetch error:", e);
-      resolve(null);
-    }
+    await Promise.all(batchPromises);
     
     if (requestQueue.length > 0) {
-      await new Promise(r => setTimeout(r, REQUEST_DELAY));
+      await new Promise(r => setTimeout(r, BATCH_DELAY));
     }
   }
   
