@@ -84,7 +84,7 @@ export async function injectPlayerBadges() {
   }
 
   for (const [nickname, oddjobId] of playerMap.entries()) {
-    if (nickname.includes("-") || nickname.length < 3) continue;
+    if (nickname.length < 2) continue;
     
     const badgeId = `leetlens-${oddjobId}`;
     if (injectedPlayers.has(badgeId)) continue;
