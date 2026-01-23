@@ -1,4 +1,4 @@
-const LEETIFY_API_BASE = "https://api-public.cs-prod.leetify.com";
+const LEETIFY_API_BASE = "https://leetlens.wigz.workers.dev";
 
 export const PRO_PLAYERS = {
   donk: { steamId: "76561198386265483", name: "donk", team: "Team Spirit" },
@@ -40,7 +40,7 @@ export interface LeetifyProfile {
 const cache = new Map<string, { data: LeetifyProfile | null; timestamp: number }>();
 const pendingRequests = new Map<string, Promise<LeetifyProfile | null>>();
 const CACHE_TTL = 30 * 60 * 1000;
-const REQUEST_DELAY = 6000;
+const REQUEST_DELAY = 1000;
 
 let requestQueue: Array<{ steam64Id: string; resolve: (data: LeetifyProfile | null) => void }> = [];
 let isProcessingQueue = false;
@@ -79,7 +79,7 @@ async function processQueue() {
 
 async function doFetchProfile(steam64Id: string): Promise<LeetifyProfile | null> {
   try {
-    const response = await fetch(`${LEETIFY_API_BASE}/v3/profile?steam64_id=${steam64Id}`, {
+    const response = await fetch(`${LEETIFY_API_BASE}/profile/${steam64Id}`, {
       headers: { 
         "Accept": "application/json",
       },
