@@ -342,6 +342,21 @@ function showPopup(profile: PlayerProfile, position: PopupPosition) {
   popupRoot!.render(<PopupContent profile={profile} onClose={closePopup} position={position} />);
 }
 
+function MiniStat({ label, value, color }: { label: string; value: string; color?: string }) {
+  return (
+    <span style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "2px",
+      fontSize: "9px",
+      color: color || "#94a3b8",
+    }}>
+      <span style={{ color: "#64748b" }}>{label}</span>
+      <span style={{ fontWeight: 600, color: color || "#cbd5e1" }}>{value}</span>
+    </span>
+  );
+}
+
 export default function PlayerBadge({ oddjobId }: Props) {
   const [profile, setProfile] = useState<PlayerProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -413,25 +428,46 @@ export default function PlayerBadge({ oddjobId }: Props) {
   }
 
   return (
-    <button
-      ref={buttonRef}
-      onClick={handleClick}
-      style={{
-        display: "inline-flex",
-        alignItems: "center",
-        marginLeft: "4px",
-        padding: "1px 5px",
-        borderRadius: "3px",
-        backgroundColor: getEloColor(profile.elo),
-        fontSize: "10px",
-        fontWeight: "bold",
-        color: "#fff",
-        border: "none",
-        cursor: "pointer",
-        outline: "none",
-      }}
-    >
-      {profile.elo.toLocaleString()}
-    </button>
+    <div style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-start", marginLeft: "4px", gap: "2px" }}>
+      <button
+        ref={buttonRef}
+        onClick={handleClick}
+        style={{
+          display: "inline-flex",
+          alignItems: "center",
+          padding: "1px 5px",
+          borderRadius: "3px",
+          backgroundColor: getEloColor(profile.elo),
+          fontSize: "10px",
+          fontWeight: "bold",
+          color: "#fff",
+          border: "none",
+          cursor: "pointer",
+          outline: "none",
+        }}
+      >
+        {profile.elo.toLocaleString()}
+      </button>
+      <div style={{ 
+        display: "flex", 
+        flexWrap: "wrap",
+        gap: "6px", 
+        padding: "2px 0",
+        maxWidth: "140px",
+      }}>
+        {profile.kdRatio !== null && (
+          <MiniStat label="K/D" value={profile.kdRatio.toFixed(2)} color={getKDColor(profile.kdRatio)} />
+        )}
+        {profile.winRate !== null && (
+          <MiniStat label="WR" value={`${Math.round(profile.winRate)}%`} color={getWinRateColor(profile.winRate)} />
+        )}
+        {profile.headshotPct !== null && (
+          <MiniStat label="HS" value={`${Math.round(profile.headshotPct)}%`} />
+        )}
+        {profile.recentWinRate !== null && (
+          <MiniStat label="Form" value={`${Math.round(profile.recentWinRate)}%`} color={getWinRateColor(profile.recentWinRate)} />
+        )}
+      </div>
+    </div>
   );
 }
