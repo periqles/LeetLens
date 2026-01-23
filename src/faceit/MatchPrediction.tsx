@@ -9,64 +9,188 @@ interface Props {
   mapName?: string | null;
 }
 
-function TeamStatsCard({ team, probability, isWinner }: { team: TeamData; probability: number; isWinner: boolean }) {
-  const barColor = isWinner ? "#22c55e" : "#ef4444";
-  const neutralColor = "#737373";
-  const displayColor = probability >= 48 && probability <= 52 ? neutralColor : barColor;
+function MiniBarChart({ color, opacity = 0.5 }: { color: string; opacity?: number }) {
+  return (
+    <div style={{ height: "24px", display: "flex", alignItems: "flex-end", gap: "2px", paddingBottom: "4px", opacity }}>
+      <div style={{ width: "4px", height: "40%", background: color, borderRadius: "2px" }} />
+      <div style={{ width: "4px", height: "60%", background: color, borderRadius: "2px" }} />
+      <div style={{ width: "4px", height: "30%", background: color, borderRadius: "2px" }} />
+    </div>
+  );
+}
+
+function StatProgressBar({ percentage, color }: { percentage: number; color: string }) {
+  return (
+    <div style={{ height: "4px", width: "48px", background: "#334155", borderRadius: "9999px", marginTop: "8px", position: "relative", overflow: "hidden" }}>
+      <div style={{ 
+        position: "absolute", 
+        left: 0, 
+        top: 0, 
+        height: "100%", 
+        width: `${Math.min(100, Math.max(0, percentage))}%`, 
+        background: color,
+        boxShadow: `0 0 5px ${color}`,
+      }} />
+    </div>
+  );
+}
+
+function TeamCard({ team, probability, isWinner, isFavorite }: { team: TeamData; probability: number; isWinner: boolean; isFavorite: boolean }) {
+  const accentColor = isFavorite ? "#00ff9d" : "#ff2a42";
+  const accentColorDim = isFavorite ? "rgba(0, 255, 157, 0.3)" : "rgba(255, 42, 66, 0.3)";
+  const textShadow = isFavorite ? "0 0 10px rgba(0, 255, 157, 0.5)" : "0 0 10px rgba(255, 42, 66, 0.5)";
+  const label = isFavorite ? "Favorite" : "Challenger";
+  const labelColor = isFavorite ? "#00ff9d" : "#ff2a42";
+  
+  const maxPremier = 35000;
+  const maxElo = 4000;
+  const premierPct = (team.avgPremierRank / maxPremier) * 100;
+  const eloPct = (team.avgFaceitElo / maxElo) * 100;
 
   return (
     <div style={{
       flex: 1,
-      padding: "12px",
-      background: isWinner ? "rgba(34, 197, 94, 0.1)" : "transparent",
-      borderRadius: "8px",
-      border: isWinner ? "1px solid rgba(34, 197, 94, 0.3)" : "1px solid rgba(255,255,255,0.1)",
+      position: "relative",
+      background: "#0c121e",
+      borderRadius: "16px",
+      border: isFavorite ? `1px solid ${accentColorDim}` : "1px solid rgba(148, 163, 184, 0.2)",
+      padding: "24px",
+      display: "flex",
+      flexDirection: "column",
+      boxShadow: isFavorite ? `0 0 30px -5px rgba(0, 255, 157, 0.15)` : `0 0 30px -10px rgba(255, 42, 66, 0.1)`,
+      overflow: "hidden",
     }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-        <span style={{ color: "#d4d4d4", fontSize: "13px", fontWeight: "600" }}>{team.name}</span>
-        <span style={{ 
-          color: displayColor, 
-          fontSize: "20px", 
-          fontWeight: "800",
-        }}>
-          {probability}%
-        </span>
-      </div>
+      <div style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "4px",
+        background: `linear-gradient(to right, transparent, ${accentColor}, transparent)`,
+        opacity: isFavorite ? 0.8 : 0.6,
+      }} />
       
-      <div style={{ height: "4px", background: "rgba(255,255,255,0.1)", borderRadius: "2px", marginBottom: "12px", overflow: "hidden" }}>
+      {isFavorite && (
+        <div style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          width: "128px",
+          height: "128px",
+          opacity: 0.1,
+          backgroundImage: `radial-gradient(circle, ${accentColor} 1px, transparent 1px)`,
+          backgroundSize: "4px 4px",
+        }} />
+      )}
+
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "24px" }}>
+        <div style={{ textAlign: "left", position: "relative", zIndex: 10 }}>
+          <h2 style={{ 
+            fontFamily: "'Rajdhani', sans-serif", 
+            fontWeight: 700, 
+            fontSize: "20px", 
+            color: isFavorite ? "#e2e8f0" : "#cbd5e1",
+            letterSpacing: "0.05em",
+            margin: 0,
+          }}>
+            {team.name}
+          </h2>
+          <span style={{ 
+            fontSize: "10px", 
+            fontFamily: "monospace",
+            color: labelColor,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            fontWeight: isFavorite ? 700 : 400,
+          }}>
+            {label}
+          </span>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <span style={{ 
+            display: "block",
+            fontFamily: "'Rajdhani', sans-serif", 
+            fontWeight: 900, 
+            fontSize: "48px", 
+            color: accentColor,
+            textShadow,
+            lineHeight: 1,
+          }}>
+            {probability}%
+          </span>
+        </div>
+      </div>
+
+      <div style={{ 
+        width: "100%", 
+        height: "6px", 
+        background: "#1e293b", 
+        borderRadius: "9999px", 
+        marginBottom: "32px", 
+        overflow: "hidden" 
+      }}>
         <div style={{ 
           height: "100%", 
           width: `${probability}%`, 
-          background: displayColor,
-          borderRadius: "2px",
+          background: accentColor,
+          boxShadow: `0 0 10px ${accentColor}`,
           transition: "width 0.5s ease-out",
         }} />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "10px" }}>
-        <div>
-          <span style={{ color: "#737373" }}>Avg Leetify</span>
-          <p style={{ color: "white", fontWeight: "600", margin: "2px 0 0 0" }}>
-            {team.avgLeetifyRating >= 0 ? "+" : ""}{team.avgLeetifyRating.toFixed(2)}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px 16px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b", fontWeight: 700, margin: 0 }}>
+            Avg Leetify
           </p>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
+            <span style={{ fontSize: "18px", fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, color: "white" }}>
+              {team.avgLeetifyRating >= 0 ? "+" : ""}{team.avgLeetifyRating.toFixed(2)}
+            </span>
+            <MiniBarChart color={accentColor} opacity={isFavorite ? 0.8 : 0.5} />
+          </div>
         </div>
-        <div>
-          <span style={{ color: "#737373" }}>Avg Premier</span>
-          <p style={{ color: "white", fontWeight: "600", margin: "2px 0 0 0" }}>
-            {team.avgPremierRank > 0 ? Math.round(team.avgPremierRank).toLocaleString() : "N/A"}
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b", fontWeight: 700, margin: 0 }}>
+            Avg Premier
           </p>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
+            <span style={{ fontSize: "18px", fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, color: "white" }}>
+              {team.avgPremierRank > 0 ? Math.round(team.avgPremierRank).toLocaleString() : "N/A"}
+            </span>
+            <StatProgressBar percentage={premierPct} color={accentColor} />
+          </div>
         </div>
-        <div>
-          <span style={{ color: "#737373" }}>Avg FACEIT ELO</span>
-          <p style={{ color: "white", fontWeight: "600", margin: "2px 0 0 0" }}>
-            {team.avgFaceitElo > 0 ? Math.round(team.avgFaceitElo).toLocaleString() : "N/A"}
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b", fontWeight: 700, margin: 0 }}>
+            Avg FACEIT ELO
           </p>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
+            <span style={{ fontSize: "18px", fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, color: "white" }}>
+              {team.avgFaceitElo > 0 ? Math.round(team.avgFaceitElo).toLocaleString() : "N/A"}
+            </span>
+            <StatProgressBar percentage={eloPct} color={accentColor} />
+          </div>
         </div>
-        <div>
-          <span style={{ color: "#737373" }}>{team.avgMapWinRate !== null ? "Map Win Rate" : "Avg Win Rate"}</span>
-          <p style={{ color: "white", fontWeight: "600", margin: "2px 0 0 0" }}>
-            {team.avgMapWinRate !== null ? Math.round(team.avgMapWinRate) : Math.round(team.avgWinRate)}%
+
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+          <p style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b", fontWeight: 700, margin: 0 }}>
+            {team.avgMapWinRate !== null ? "Map Win Rate" : "Avg Win Rate"}
           </p>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
+            <span style={{ fontSize: "18px", fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, color: "white" }}>
+              {team.avgMapWinRate !== null ? Math.round(team.avgMapWinRate) : Math.round(team.avgWinRate)}%
+            </span>
+            <span style={{ 
+              fontSize: "14px", 
+              color: isFavorite ? "#22c55e" : "#ef4444",
+              transform: isFavorite ? "none" : "rotate(180deg)",
+            }}>
+              ▲
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -113,24 +237,27 @@ export default function MatchPrediction({ team1Players, team2Players, team1Name,
   if (loading) {
     return (
       <div style={{
-        background: "#141414",
-        borderRadius: "8px",
-        padding: "16px",
+        background: "#0f1623",
+        borderRadius: "24px",
+        padding: "24px",
         marginBottom: "16px",
-        border: "1px solid rgba(255,255,255,0.1)",
+        border: "1px solid rgba(148, 163, 184, 0.2)",
+        boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <span style={{
-            width: "12px",
-            height: "12px",
-            border: "2px solid #667eea",
+            width: "16px",
+            height: "16px",
+            border: "2px solid #6366f1",
             borderTopColor: "transparent",
             borderRadius: "50%",
-            animation: "leetify-spin 0.6s linear infinite",
+            animation: "ll-spin 0.6s linear infinite",
           }} />
-          <span style={{ color: "#737373", fontSize: "12px" }}>Calculating match prediction...</span>
+          <span style={{ color: "#94a3b8", fontSize: "14px", fontFamily: "'Inter', sans-serif" }}>
+            Calculating match prediction...
+          </span>
         </div>
-        <style>{`@keyframes leetify-spin { to { transform: rotate(360deg); } }`}</style>
+        <style>{`@keyframes ll-spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     );
   }
@@ -139,54 +266,192 @@ export default function MatchPrediction({ team1Players, team2Players, team1Name,
     return null;
   }
 
-  const team1Wins = probability.team1 > probability.team2;
-  const team2Wins = probability.team2 > probability.team1;
+  const team1IsFavorite = probability.team1 > probability.team2;
+  const team2IsFavorite = probability.team2 > probability.team1;
 
   return (
     <div style={{
-      background: "#141414",
-      borderRadius: "8px",
-      padding: "16px",
+      background: "#0f1623",
+      borderRadius: "24px",
+      overflow: "hidden",
       marginBottom: "16px",
-      border: "1px solid rgba(255,255,255,0.1)",
-      fontFamily: "'Plus Jakarta Sans', 'Segoe UI', sans-serif",
+      border: "1px solid rgba(148, 163, 184, 0.2)",
+      boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+      fontFamily: "'Inter', sans-serif",
+      position: "relative",
     }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "12px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ fontSize: "16px" }}>🔮</span>
-          <span style={{ color: "white", fontSize: "14px", fontWeight: "700" }}>Match Prediction</span>
-        </div>
-        <span style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          color: "white",
-          fontSize: "9px",
-          padding: "3px 8px",
-          borderRadius: "4px",
-          fontWeight: "600",
-        }}>
-          POWERED BY LEETIFY DATA
-        </span>
-      </div>
+      <div style={{
+        position: "absolute",
+        inset: 0,
+        zIndex: 0,
+        opacity: 0.03,
+        pointerEvents: "none",
+        backgroundImage: "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)",
+        backgroundSize: "30px 30px",
+      }} />
 
-      <div style={{ display: "flex", gap: "12px", marginBottom: "12px" }}>
-        <TeamStatsCard team={team1Data} probability={probability.team1} isWinner={team1Wins} />
-        <div style={{ display: "flex", alignItems: "center", color: "#525252", fontSize: "12px", fontWeight: "700" }}>VS</div>
-        <TeamStatsCard team={team2Data} probability={probability.team2} isWinner={team2Wins} />
-      </div>
-
-      <div style={{ 
-        background: "rgba(255,255,255,0.05)", 
-        borderRadius: "6px", 
-        padding: "8px 12px",
+      <div style={{
+        padding: "24px 32px",
         display: "flex",
+        justifyContent: "space-between",
         alignItems: "center",
-        gap: "8px",
+        borderBottom: "1px solid rgba(148, 163, 184, 0.1)",
+        position: "relative",
+        overflow: "hidden",
       }}>
-        <span style={{ color: "#f59e0b", fontSize: "12px" }}>⚠️</span>
-        <span style={{ color: "#737373", fontSize: "10px" }}>
-          Prediction based on Leetify Rating, Premier Rank, FACEIT ELO, Aim stats, {team1Data.avgMapWinRate !== null ? "map-specific" : "overall"} win rates.
-          Results may vary based on team synergy and current form.
-        </span>
+        <div style={{
+          position: "absolute",
+          top: 0,
+          right: 0,
+          width: "256px",
+          height: "256px",
+          background: "rgba(99, 102, 241, 0.1)",
+          borderRadius: "50%",
+          filter: "blur(48px)",
+          transform: "translate(50%, -50%)",
+        }} />
+        
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", position: "relative", zIndex: 10 }}>
+          <div style={{
+            padding: "8px",
+            borderRadius: "8px",
+            background: "rgba(99, 102, 241, 0.1)",
+            border: "1px solid rgba(99, 102, 241, 0.3)",
+          }}>
+            <span style={{ fontSize: "24px" }}>🎮</span>
+          </div>
+          <div>
+            <h1 style={{ 
+              fontFamily: "'Rajdhani', sans-serif", 
+              fontWeight: 700, 
+              fontSize: "24px", 
+              letterSpacing: "0.05em",
+              textTransform: "uppercase",
+              color: "white",
+              margin: 0,
+            }}>
+              Match Prediction
+            </h1>
+            <p style={{ 
+              fontSize: "10px", 
+              color: "#94a3b8", 
+              fontFamily: "monospace",
+              letterSpacing: "0.1em",
+              margin: 0,
+            }}>
+              ANALYTICS V2.0
+            </p>
+          </div>
+        </div>
+
+        <div style={{
+          background: "linear-gradient(135deg, #475569 0%, #334155 50%, #1e293b 51%, #0f172a 100%)",
+          boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.3)",
+          padding: "6px 16px",
+          borderRadius: "9999px",
+          border: "1px solid #475569",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          position: "relative",
+          zIndex: 10,
+        }}>
+          <span style={{ fontSize: "12px" }}>⚡</span>
+          <span style={{ 
+            fontSize: "10px", 
+            fontWeight: 700, 
+            color: "#e2e8f0", 
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            fontFamily: "'Rajdhani', sans-serif",
+          }}>
+            Powered by Leetify Data
+          </span>
+        </div>
+      </div>
+
+      <div style={{ padding: "32px 40px", position: "relative" }}>
+        <div style={{ display: "flex", gap: "32px", position: "relative" }}>
+          <div style={{
+            position: "absolute",
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 20,
+            height: "100%",
+            pointerEvents: "none",
+          }}>
+            <div style={{
+              height: "100%",
+              width: "1px",
+              background: "linear-gradient(to bottom, transparent, #475569, transparent)",
+            }} />
+            <div style={{
+              position: "absolute",
+              background: "#050b14",
+              border: "2px solid #475569",
+              borderRadius: "8px",
+              padding: "8px",
+            }}>
+              <span style={{ 
+                fontFamily: "'Rajdhani', sans-serif", 
+                fontWeight: 900, 
+                fontSize: "18px", 
+                color: "#64748b",
+                fontStyle: "italic",
+                paddingRight: "4px",
+              }}>
+                VS
+              </span>
+            </div>
+          </div>
+
+          <TeamCard 
+            team={team1Data} 
+            probability={probability.team1} 
+            isWinner={team1IsFavorite}
+            isFavorite={team1IsFavorite}
+          />
+          <TeamCard 
+            team={team2Data} 
+            probability={probability.team2} 
+            isWinner={team2IsFavorite}
+            isFavorite={team2IsFavorite}
+          />
+        </div>
+      </div>
+
+      <div style={{ padding: "0 40px 32px 40px" }}>
+        <div style={{
+          borderRadius: "12px",
+          background: "rgba(30, 41, 59, 0.5)",
+          border: "1px solid rgba(71, 85, 105, 0.5)",
+          padding: "16px",
+          display: "flex",
+          gap: "16px",
+          alignItems: "flex-start",
+        }}>
+          <div style={{
+            padding: "6px",
+            borderRadius: "9999px",
+            background: "rgba(245, 158, 11, 0.2)",
+            color: "#f59e0b",
+            flexShrink: 0,
+          }}>
+            <span style={{ fontSize: "16px" }}>⚠️</span>
+          </div>
+          <div style={{ fontSize: "12px", color: "#94a3b8", lineHeight: 1.6 }}>
+            <span style={{ fontWeight: 700, color: "#cbd5e1", display: "block", marginBottom: "4px" }}>
+              Prediction Disclaimer
+            </span>
+            Prediction based on Leetify Rating, Premier Rank, FACEIT ELO, Aim stats, and {team1Data.avgMapWinRate !== null ? "map-specific" : "historical"} win rates. 
+            Results may vary based on map, team synergy, and current form.
+          </div>
+        </div>
       </div>
     </div>
   );
