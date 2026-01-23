@@ -278,7 +278,8 @@ export async function fetchMatchData(): Promise<MatchData | null> {
       };
 
       matchDataCache = { url: currentUrl, data: matchData };
-      console.log("[LeetLens] Match data loaded, players:", playerMap.size, "map:", matchData.mapName);
+      const totalPlayers = matchData.teams.team1.players.length + matchData.teams.team2.players.length;
+      console.log("[LeetLens] Match data loaded, players:", totalPlayers, "map:", matchData.mapName);
       return matchData;
     } catch (error) {
       console.error("[LeetLens] Failed to fetch match data:", error);
