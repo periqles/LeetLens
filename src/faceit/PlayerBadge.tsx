@@ -345,9 +345,10 @@ function showPopup(profile: PlayerProfile, position: PopupPosition) {
 function MiniStat({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
     <span style={{
-      fontSize: "9px",
+      fontSize: "8px",
       color: color || "#94a3b8",
       fontWeight: 600,
+      whiteSpace: "nowrap",
     }}>
       <span style={{ color: "#64748b", fontWeight: 400 }}>{label}</span>{value}
     </span>
@@ -425,14 +426,24 @@ export default function PlayerBadge({ oddjobId }: Props) {
   }
 
   return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: "6px", marginLeft: "4px" }}>
+    <div style={{ 
+      display: "inline-flex", 
+      flexDirection: "column", 
+      alignItems: "flex-start", 
+      marginLeft: "6px",
+      backgroundColor: "rgba(0,0,0,0.4)",
+      borderRadius: "4px",
+      padding: "4px 6px",
+      gap: "3px",
+      border: "1px solid rgba(255,255,255,0.1)",
+    }}>
       <button
         ref={buttonRef}
         onClick={handleClick}
         style={{
           display: "inline-flex",
           alignItems: "center",
-          padding: "1px 5px",
+          padding: "2px 6px",
           borderRadius: "3px",
           backgroundColor: getEloColor(profile.elo),
           fontSize: "10px",
@@ -445,15 +456,22 @@ export default function PlayerBadge({ oddjobId }: Props) {
       >
         {profile.elo.toLocaleString()}
       </button>
-      {profile.kdRatio !== null && (
-        <MiniStat label="K/D " value={profile.kdRatio.toFixed(2)} color={getKDColor(profile.kdRatio)} />
+      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+        {profile.kdRatio !== null && (
+          <MiniStat label="K/D " value={profile.kdRatio.toFixed(2)} color={getKDColor(profile.kdRatio)} />
+        )}
+        {profile.winRate !== null && (
+          <MiniStat label="WR " value={`${Math.round(profile.winRate)}%`} color={getWinRateColor(profile.winRate)} />
+        )}
+        {profile.headshotPct !== null && (
+          <MiniStat label="HS " value={`${Math.round(profile.headshotPct)}%`} />
+        )}
+      </div>
+      {profile.recentWinRate !== null && (
+        <div style={{ display: "flex", gap: "6px" }}>
+          <MiniStat label="Form " value={`${Math.round(profile.recentWinRate)}%`} color={getWinRateColor(profile.recentWinRate)} />
+        </div>
       )}
-      {profile.winRate !== null && (
-        <MiniStat label="WR " value={`${Math.round(profile.winRate)}%`} color={getWinRateColor(profile.winRate)} />
-      )}
-      {profile.headshotPct !== null && (
-        <MiniStat label="HS " value={`${Math.round(profile.headshotPct)}%`} />
-      )}
-    </span>
+    </div>
   );
 }
