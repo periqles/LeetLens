@@ -139,8 +139,8 @@ export default function useTurnstile(id: string): TurnstileCaptcha {
         turnstileSiteKeyPromiseRef.current.resolve(siteKey);
       }
 
-      if (!faceitMainScript && !faceitCatchaScript) {
-        throw new Error("Could not find FACEIT main or captcha script");
+      if (!faceitMainScript && faceitChunkScripts.length === 0) {
+        throw new Error("Could not find FACEIT scripts");
       }
     })();
   });
