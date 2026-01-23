@@ -49,13 +49,14 @@ function StatRow({ label, team1Value, team2Value, suffix = "", higherIsBetter = 
         {formatValue(team1Value)}{suffix}
       </div>
       <div style={{ 
-        fontSize: "11px", 
+        fontSize: "10px", 
         color: "#64748b", 
         textTransform: "uppercase",
-        letterSpacing: "0.05em",
+        letterSpacing: "0.03em",
         fontWeight: 600,
-        minWidth: "100px",
+        minWidth: "80px",
         textAlign: "center",
+        padding: "0 4px",
       }}>
         {label}
       </div>
@@ -81,7 +82,9 @@ function TeamHeader({ team, probability, isFavorite }: { team: TeamData; probabi
     <div style={{ 
       flex: 1, 
       textAlign: "center",
-      padding: "20px",
+      padding: "16px 12px",
+      minWidth: 0,
+      overflow: "hidden",
     }}>
       <div style={{
         display: "inline-block",
@@ -102,17 +105,20 @@ function TeamHeader({ team, probability, isFavorite }: { team: TeamData; probabi
       <h2 style={{ 
         fontFamily: "'Rajdhani', sans-serif",
         fontWeight: 700,
-        fontSize: "22px",
+        fontSize: "18px",
         color: "#e2e8f0",
         margin: "0 0 8px 0",
         letterSpacing: "0.02em",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
       }}>
         {team.name}
       </h2>
       <div style={{
         fontFamily: "'Rajdhani', sans-serif",
         fontWeight: 900,
-        fontSize: "48px",
+        fontSize: "36px",
         color: accentColor,
         textShadow: `0 0 20px ${accentColor}40`,
         lineHeight: 1,
@@ -274,21 +280,22 @@ export default function MatchPrediction({ team1Players, team2Players, team1Name,
       }}>
         <TeamHeader team={team1Data} probability={probability.team1} isFavorite={team1IsFavorite} />
         <div style={{
-          padding: "0 20px",
+          padding: "0 8px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          flexShrink: 0,
         }}>
           <div style={{
             background: "#0c121e",
             border: "2px solid #334155",
-            borderRadius: "8px",
-            padding: "8px 16px",
+            borderRadius: "6px",
+            padding: "6px 10px",
           }}>
             <span style={{ 
               fontFamily: "'Rajdhani', sans-serif",
               fontWeight: 900,
-              fontSize: "18px",
+              fontSize: "14px",
               color: "#475569",
               fontStyle: "italic",
             }}>
