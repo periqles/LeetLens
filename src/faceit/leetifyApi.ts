@@ -40,7 +40,7 @@ export interface LeetifyProfile {
 const cache = new Map<string, { data: LeetifyProfile | null; timestamp: number }>();
 const pendingRequests = new Map<string, Promise<LeetifyProfile | null>>();
 const CACHE_TTL = 30 * 60 * 1000;
-const REQUEST_DELAY = 1000;
+const REQUEST_DELAY = 1500;
 
 let requestQueue: Array<{ steam64Id: string; resolve: (data: LeetifyProfile | null) => void }> = [];
 let isProcessingQueue = false;
